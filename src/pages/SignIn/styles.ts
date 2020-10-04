@@ -1,11 +1,12 @@
 import styled from 'styled-components/native'
-import { getBottomSpace } from 'react-native-iphone-x-helper'
+import { Platform } from 'react-native';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-  padding: 0 30px;
+  padding: 0 30px ${Platform.OS === 'android' ? 150 : 40}px;
 `;
 
 export const Title = styled.Text`
@@ -13,6 +14,7 @@ export const Title = styled.Text`
   color: #f4ede8;
   font-family: 'RobotoSlab-Medium';
   margin: 64px 0 24px;
+  padding: 0 30px 100px;
 `;
 
 export const ForgotPassword = styled.TouchableOpacity`

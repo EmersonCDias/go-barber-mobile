@@ -4,10 +4,10 @@
   },
   "extends": [
     "plugin:react/recommended",
-    "airbnb",
+    "airbnb-base",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended",
+    "plugin:prettier/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -30,6 +30,8 @@
   ],
   "rules": {
     "prettier/prettier": "error",
+    "react/prop-types": "off",
+    "no-unused-expressions": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-filename-extension": [

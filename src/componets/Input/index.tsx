@@ -28,7 +28,7 @@ interface InputRef {
 const Input: React.RefFowardingComponent<{ InputRef }, InputProps> = ({ name, icon, ...rest }, ref) => {
   const { registerField, defaultValue, fieldName, error } = useField(name);
 
-  const inputElementRef = useRef<any>(null);
+  const inputElementRef = useRef<InputRef>(null);
   const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
 
   const [isFocused, setIsFocused] = useState(false);
@@ -64,7 +64,7 @@ const Input: React.RefFowardingComponent<{ InputRef }, InputProps> = ({ name, ic
   }, [registerField, fieldName]);
 
   return (
-    <Container isFocused={isFocused}>
+    <Container isFocused={isFocused} isErrored={!!error}>
       <Icon name={icon} size={20} color={isFocused || isFilled ? '#ff9000' : '#666360'} />
 
       <TextInput

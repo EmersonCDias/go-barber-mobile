@@ -6,16 +6,26 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+import * as Yup from 'yup';
 
 import Input from '../../componets/Input';
 import Button from '../../componets/Button';
 import { Container, Title, BackToSignInButton, BackToSignInButtonText } from './styles';
-import logoImg from '../../assets/logo.png'
+import logoImg from '../../assets/logo.png';
+import schema from './formValidation';
+import getValidationErros from '../../utils/getValidationErros';
+
+interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -23,9 +33,33 @@ const SignUp = () => {
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const handleSignUp = useCallback((data: object) => {
-    console.log(data)
-  }, []);
+  const handleSignUp = useCallback(
+    async (data: SignUpFormData) => {
+      try {
+        formRef.current?.setErrors({});
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        // await api.post('/users', data);
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErros(err);
+
+          formRef.current?.setErrors(errors);
+
+          return;
+        };
+
+        Alert.alert(
+          'Erro ao cadastrar',
+          'Tente novamente',
+        )
+      }
+    },
+    [],
+  );
 
   return (
     <>

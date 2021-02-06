@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef } from 'react';
 import {
   ScrollView,
   Image,
@@ -9,16 +9,23 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
-import { useAuth } from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook';
 import Input from '../../componets/Input';
 import Button from '../../componets/Button';
-import { Container, Title, ForgotPassword, ForgotPasswordText, CreateAccountButton, CreateAccountButtonText } from './styles';
-import logoImg from '../../assets/logo.png'
+import {
+  Container,
+  Title,
+  ForgotPassword,
+  ForgotPasswordText,
+  CreateAccountButton,
+  CreateAccountButtonText,
+} from './styles';
+import logoImg from '../../assets/logo.png';
 import getValidationErros from '../../utils/getValidationErros';
 import schema from './formValidation';
 
@@ -56,10 +63,7 @@ const SignIn = () => {
           return;
         }
 
-        Alert.alert(
-          'Erro na autenticação',
-          'Verifique e-mail/senha',
-        )
+        Alert.alert('Erro na autenticação', 'Verifique e-mail/senha');
       }
     },
     [signIn],
@@ -72,7 +76,10 @@ const SignIn = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
-        <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps="handled">
+        <ScrollView
+          contentContainerStyle={{ flex: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
           <Container>
             <Image source={logoImg} />
 
@@ -102,13 +109,13 @@ const SignIn = () => {
                 onSubmitEditing={() => formRef.current?.submitForm()}
               />
 
-              <Button onPress={() => formRef.current?.submitForm()}>Entrar</Button>
+              <Button onPress={() => formRef.current?.submitForm()}>
+                Entrar
+              </Button>
             </Form>
 
             <ForgotPassword onPress={() => console.log('teste1')}>
-              <ForgotPasswordText>
-                Esqueci minha senha
-            </ForgotPasswordText>
+              <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
             </ForgotPassword>
           </Container>
         </ScrollView>
@@ -117,14 +124,12 @@ const SignIn = () => {
           <Icon name="log-in" size={20} color="#ff9000" />
 
           <View>
-            <CreateAccountButtonText>
-              Criar conta
-            </CreateAccountButtonText>
+            <CreateAccountButtonText>Criar conta</CreateAccountButtonText>
           </View>
         </CreateAccountButton>
       </KeyboardAvoidingView>
     </>
-  )
-}
+  );
+};
 
 export default SignIn;

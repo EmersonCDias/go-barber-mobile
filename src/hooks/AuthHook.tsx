@@ -1,24 +1,14 @@
-import React, { createContext, useCallback, useState, useContext, useEffect } from 'react';
-import AsyncStorage from '@react-native-community/async-storage'
+import React, {
+  createContext,
+  useCallback,
+  useState,
+  useContext,
+  useEffect,
+} from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../services/api';
-
-interface AuthState {
-  token: string;
-  user: object;
-}
-
-interface SignInCredentials {
-  email: string;
-  password: string;
-}
-
-interface AuthContextState {
-  user: object;
-  loading: boolean;
-  signIn(credentials: SignInCredentials): Promise<void>;
-  signOut(): void;
-}
+import { User, AuthContextState, AuthState, SignInCredentials } from './types';
 
 const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
@@ -30,24 +20,29 @@ export const AuthProvider: React.FC = ({ children }) => {
     async function loadStorageData() {
       const [token, user] = await AsyncStorage.multiGet([
         '@GoBarber:token',
-        '@GoBarber:user'
+        '@GoBarber:user',
       ]);
 
-      if (token[1] && user[1]) setData({ token: token[1], user: JSON.parse(user[1]) });
+      api.defaults.headers.authorization = `Bearer ${token[1]}`;
+
+      if (token[1] && user[1])
+        setData({ token: token[1], user: JSON.parse(user[1]) });
 
       setLoading(false);
-    };
+    }
 
     loadStorageData();
-  }, [])
+  }, []);
 
-  const signIn = useCallback(async ({ email, password }) => {
+  const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
     const response = await api.post('/sessions', {
       email,
       password,
     });
 
     const { token, user } = response.data;
+
+    api.defaults.headers.authorization = `Bearer ${token}`;
 
     await AsyncStorage.multiSet([
       ['@GoBarber:token', token],
@@ -58,10 +53,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(async () => {
-    await AsyncStorage.multiRemove([
-      '@GoBarber:token',
-      '@GoBarber:user',
-    ]);
+    await AsyncStorage.multiRemove(['@GoBarber:token', '@GoBarber:user']);
 
     setData({} as AuthState);
   }, []);

@@ -69,46 +69,44 @@ const Dashboard = () => {
         </ProfileButton>
       </Header>
 
-      {loading && <UserName>Carregando</UserName>}
+      {/* {loading && <UserName>Carregando</UserName>} */}
 
-      {!loading && error && <UserName>Falha</UserName>}
+      {/* {!loading && error && <UserName>Falha</UserName>} */}
 
-      {!loading && !error && !providers.length && (
-        <UserName>Não há barbeiros disponíveis!</UserName>
-      )}
+      {/* {!loading && !error && !providers.length && ( */}
+      {/*  <UserName>Não há barbeiros disponíveis!</UserName> */}
+      {/* )} */}
 
-      {!loading && !error && providers.length && (
-        <ProvidersList
-          data={providers}
-          keyExtractor={provider => provider.id}
-          ListHeaderComponent={
-            <ProvidersListTitle>Cabeleireiros</ProvidersListTitle>
-          }
-          renderItem={({ item: provider }) => (
-            <ProviderContainer
-              onPress={() => navigateToCreateAppointment(provider.id)}
-            >
-              <ProviderAvatar source={{ uri: provider.avatar_url }} />
+      <ProvidersList
+        data={providers}
+        keyExtractor={provider => provider.id}
+        ListHeaderComponent={
+          <ProvidersListTitle>Cabeleireiros</ProvidersListTitle>
+        }
+        renderItem={({ item: provider }) => (
+          <ProviderContainer
+            onPress={() => navigateToCreateAppointment(provider.id)}
+          >
+            <ProviderAvatar source={{ uri: provider.avatar_url }} />
 
-              <ProviderInfo>
-                <ProviderName>{provider.name}</ProviderName>
+            <ProviderInfo>
+              <ProviderName>{provider.name}</ProviderName>
 
-                <ProviderMeta>
-                  <Icon name="calendar" size={14} color="#ff9000" />
+              <ProviderMeta>
+                <Icon name="calendar" size={14} color="#ff9000" />
 
-                  <ProviderMetaText>Segunda à Sexta</ProviderMetaText>
-                </ProviderMeta>
+                <ProviderMetaText>Segunda à Sexta</ProviderMetaText>
+              </ProviderMeta>
 
-                <ProviderMeta>
-                  <Icon name="clock" size={14} color="#ff9000" />
+              <ProviderMeta>
+                <Icon name="clock" size={14} color="#ff9000" />
 
-                  <ProviderMetaText>8h às 18h</ProviderMetaText>
-                </ProviderMeta>
-              </ProviderInfo>
-            </ProviderContainer>
-          )}
-        />
-      )}
+                <ProviderMetaText>8h às 18h</ProviderMetaText>
+              </ProviderMeta>
+            </ProviderInfo>
+          </ProviderContainer>
+        )}
+      />
     </Container>
   );
 };

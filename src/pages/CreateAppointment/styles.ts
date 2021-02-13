@@ -3,7 +3,13 @@ import { FlatList } from 'react-native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { Provider, ProviderContainerProps, ProviderNameProps } from './types';
+import {
+  Provider,
+  ProviderContainerProps,
+  ProviderNameProps,
+  HourProps,
+  HourTextProps,
+} from './types';
 
 export const Container = styled.View`
   flex: 1;
@@ -69,7 +75,7 @@ export const Calendar = styled.View`
   background: transparent;
 `;
 
-export const CalendarTitle = styled.Text`
+export const Title = styled.Text`
   font-family: 'RobotSlab-Medium';
   color: #f4ede8;
   font-size: 24px;
@@ -89,4 +95,41 @@ export const OpenDatePickerButtonText = styled.Text`
   font-family: 'RobotSlab-Medium';
   font-size: 16px;
   color: #232129;
+`;
+
+export const Content = styled.ScrollView``;
+
+export const Schedule = styled.View`
+  padding: 24px 0 16px;
+`;
+
+export const Section = styled.View`
+  margin-bottom: 24px;
+`;
+
+export const SectionTitle = styled.Text`
+  font-size: 18px;
+  color: #999591;
+  font-family: 'RobotSlab-Regular';
+  margin: 0 24px 12px;
+`;
+
+export const SectionContent = styled.ScrollView.attrs({
+  contentContainerStyle: { paddingHorizontal: 24 },
+  horizontal: true,
+  showsHorizontalScrollIndicator: false,
+})``;
+
+export const Hour = styled(RectButton)<HourProps>`
+  padding: 12px;
+  border-radius: 10px;
+  margin-right: 8px;
+  opacity: ${props => (props.available ? 1 : 0.3)};
+  background: ${props => (props.selected ? '#ff9000' : '#3e3b47')};
+`;
+
+export const HourText = styled.Text<HourTextProps>`
+  color: ${props => (props.selected ? '#232129' : '#f4ede8')};
+  font-family: 'RobotSlab-Regular';
+  font-size: 16px;
 `;

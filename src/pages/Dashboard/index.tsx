@@ -64,7 +64,7 @@ const Dashboard = () => {
           <UserName>{user.name}</UserName>
         </HeaderTitle>
 
-        <ProfileButton onPress={navigateToProfile}>
+        <ProfileButton onPress={signOut}>
           <UserAvatar source={{ uri: user.avatar_url }} />
         </ProfileButton>
       </Header>
@@ -95,11 +95,13 @@ const Dashboard = () => {
 
                 <ProviderMeta>
                   <Icon name="calendar" size={14} color="#ff9000" />
+
                   <ProviderMetaText>Segunda à Sexta</ProviderMetaText>
                 </ProviderMeta>
 
                 <ProviderMeta>
                   <Icon name="clock" size={14} color="#ff9000" />
+
                   <ProviderMetaText>8h às 18h</ProviderMetaText>
                 </ProviderMeta>
               </ProviderInfo>

@@ -35,9 +35,9 @@ import { useAuth } from '../../hooks/AuthHook';
 import api from '../../services/api';
 
 const CreateAppointment = () => {
-  const route = useRoute();
+  const { params } = useRoute();
 
-  const routeParams = route.params as RouteParams;
+  const routeParams = params as RouteParams;
 
   const [selectedHour, setSelectedHour] = useState(0);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -47,10 +47,10 @@ const CreateAppointment = () => {
     routeParams.providerId,
   );
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [loadingProvider, setLoadingProvider] = useState(false);
-  const [errorProvider, setErrorProvider] = useState(false);
-  const [loadingAvailability, setLoadingAvailability] = useState(false);
-  const [errorAvailability, setErrorAvailability] = useState(false);
+  // const [loadingProvider, setLoadingProvider] = useState(false);
+  // const [errorProvider, setErrorProvider] = useState(false);
+  // const [loadingAvailability, setLoadingAvailability] = useState(false);
+  // const [errorAvailability, setErrorAvailability] = useState(false);
 
   const { user } = useAuth();
 
@@ -118,14 +118,7 @@ const CreateAppointment = () => {
   }, [navigate, selectedDate, selectedHour, selectedProvider]);
 
   useEffect(() => {
-    api
-      .get('providers')
-      .then(({ data }) => {
-        setLoadingProvider(false);
-        setProviders(data);
-      })
-      .catch(() => setErrorProvider(true))
-      .finally(() => setLoadingProvider(false));
+    api.get('providers').then(({ data }) => setProviders(data));
   }, []);
 
   useEffect(() => {
@@ -137,10 +130,7 @@ const CreateAppointment = () => {
           day: selectedDate.getDate(),
         },
       })
-      .then(({ data }) => {
-        setLoadingAvailability(false);
-        setAvailability(data);
-      });
+      .then(({ data }) => setAvailability(data));
   }, [selectedDate, selectedProvider]);
 
   return (

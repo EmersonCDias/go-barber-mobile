@@ -97,7 +97,9 @@ export const OpenDatePickerButtonText = styled.Text`
   color: #232129;
 `;
 
-export const Content = styled.ScrollView``;
+export const Content = styled.ScrollView.attrs({
+  showsHorizontalScrollIndicator: false,
+})``;
 
 export const Schedule = styled.View`
   padding: 24px 0 16px;

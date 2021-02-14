@@ -83,6 +83,22 @@ const CreateAppointment = () => {
     [selectedHour],
   );
 
+  const handleDateChange = useCallback((event: any, date: Date | undefined) => {
+    if (Platform.OS === 'android') setShowDatePicker(false);
+
+    if (date) setSelectedDate(date);
+  }, []);
+
+  const handleToggleDatePicker = useCallback(
+    () => setShowDatePicker(state => !state),
+    [],
+  );
+
+  const handleSelectProvider = useCallback(
+    (providerId: string) => setSelectedProvider(providerId),
+    [],
+  );
+
   const handleCreateAppointment = useCallback(async () => {
     try {
       const date = new Date(selectedDate);
@@ -101,26 +117,7 @@ const CreateAppointment = () => {
     }
   }, [navigate, selectedDate, selectedHour, selectedProvider]);
 
-  const handleDateChange = useCallback((event: any, date: Date | undefined) => {
-    if (Platform.OS === 'android') setShowDatePicker(false);
-
-    if (date) setSelectedDate(date);
-  }, []);
-
-  const handleToggleDatePicker = useCallback(
-    () => setShowDatePicker(state => !state),
-    [],
-  );
-
-  const handleSelectProvider = useCallback(
-    (providerId: string) => setSelectedProvider(providerId),
-    [],
-  );
-
-  const handleProviders = useCallback(() => {
-    setLoadingProvider(true);
-    setErrorProvider(false);
-
+  useEffect(() => {
     api
       .get('providers')
       .then(({ data }) => {
@@ -130,28 +127,6 @@ const CreateAppointment = () => {
       .catch(() => setErrorProvider(true))
       .finally(() => setLoadingProvider(false));
   }, []);
-
-  const handleAvailability = useCallback(() => {
-    setLoadingAvailability(true);
-    setErrorAvailability(false);
-
-    api
-      .get(`providers/${selectedProvider}/day-availability`, {
-        params: {
-          year: selectedDate.getFullYear(),
-          month: selectedDate.getMonth() + 1,
-          day: selectedDate.getDate(),
-        },
-      })
-      .then(({ data }) => {
-        setLoadingAvailability(false);
-        setAvailability(data);
-      })
-      .catch(() => setErrorAvailability(true))
-      .finally(() => setLoadingAvailability(false));
-  }, []);
-
-  useEffect(handleProviders, []);
 
   useEffect(() => {
     api

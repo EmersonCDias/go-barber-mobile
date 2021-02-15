@@ -26,15 +26,10 @@ import {
 import schema from './formValidation';
 import getValidationErros from '../../utils/getValidationErros';
 import { useAuth } from '../../hooks/AuthHook';
-
-interface UpdateProfile {
-  name: string;
-  email: string;
-  password: string;
-}
+import { ProfileFormData } from './types';
 
 const SignUp = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const navigation = useNavigation();
   const formRef = useRef<FormHandles>(null);
@@ -47,7 +42,7 @@ const SignUp = () => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleSignUp = useCallback(async (data: UpdateProfile) => {
+  const handleUpdateProfile = useCallback(async (data: ProfileFormData) => {
     try {
       formRef.current?.setErrors({});
 
@@ -55,9 +50,23 @@ const SignUp = () => {
         abortEarly: false,
       });
 
-      await api.post('/users', data);
+      const formData = {
+        name: data.name,
+        email: data.email,
+        ...(data.old_password
+          ? {
+              old_password: data.old_password,
+              password: data.password,
+              password_confirmation: data.password_confirmation,
+            }
+          : {}),
+      };
 
-      Alert.alert('Cadastro realizado com sucesso!', 'Faça o login');
+      const response = await api.put('profile', formData);
+
+      updateUser(response.data);
+
+      Alert.alert('Dados atualizados com sucesso!');
 
       navigation.goBack();
     } catch (err) {
@@ -95,7 +104,14 @@ const SignUp = () => {
               <Title>Meu perfil</Title>
             </View>
 
-            <Form ref={formRef} onSubmit={handleSignUp}>
+            <Form
+              initialData={{
+                name: user.name,
+                email: user.email,
+              }}
+              ref={formRef}
+              onSubmit={handleUpdateProfile}
+            >
               <Input
                 autoCapitalize="words"
                 autoCorrect={false}
@@ -134,7 +150,7 @@ const SignUp = () => {
                 secureTextEntry
                 name="password"
                 icon="lock"
-                placeholder="Nova eenha"
+                placeholder="Nova senha"
                 onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
                 textContenType="newPassword"
                 returnKeyType="next"
